@@ -1,0 +1,91 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %}Check Out
+{%endblock title %} {% block main-content %}
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-sm-6">
+      <h4>Order Summary</h4>
+      <hr />
+      {% for cart in cart_items %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5>{{cart.product.title}}</h5>
+          <p>Quantity: {{cart.quantity}}</p>
+          <p class="fw-bold">{{cart.total_cost}}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <p class="fw-bold">Total: {{totalAmount}}</p>
+      <small
+        >Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing
+        elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem.
+        Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil
+        in et quis?</small
+      >
+    </div>
+    <div class="col-sm-4 offset-sm-1">
+      <h4>Select Shipping Address</h4>
+      <hr />
+      <form action="/paymentdone" id="myform">
+        {% for ad in add %}
+        <div class="card">
+          <div class="card-body">
+            <h5>{{ad.name}}</h5>
+            <p>{{ad.mobile}},{{ad.address}},{{ad.state}}</p>
+          </div>
+        </div>
+        <div class="form-check mt-2 mb-5">
+          <input
+            class="form-check-input"
+            name="custid"
+            id="custadd{{ad.id}}"
+            type="radio"
+            value="{{ad.id}}"
+          />
+          <label class="form-check-label fw-bold" for="">
+            Address:{{ad.id}}
+          </label>
+        </div>
+        {% endfor %}
+        <div class="text-end">
+          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">
+            Order
+          </button>
+          <div id="paypal-button-container"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock main-content %} {% block payment-gateway %}
+<script src="https://www.paypal.com/sdk/js?client-id=AYf4wt5CPDl1xcCwvha4WrUFoh9PmotGmyy-tr6Qlwq_ZvL7etgo9yU2Jn1NydKkMcDPZgAZpxLk0hiL&currency=USD"></script>
+
+<script>
+  // Render the PayPal button into #paypal-button-container
+  paypal
+    .Buttons({
+      // Call your server to set up the transaction
+      createOrder: function (data, actions) {
+        return acctions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: "{{totalAmount}}",
+              },
+            },
+          ],
+        });
+      },
+
+      // Call your server to finalize the transaction
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+          alert(
+            "Transaction completed by" + details.payers.name.given_name + "!"
+          );
+          document.getElementById("myform").submit();
+        });
+      },
+    })
+    .render("#paypal-button-container");
+</script>
+{% endblock payment-gateway %}

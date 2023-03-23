@@ -1,0 +1,163 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %}Customer
+Registration{% endblock title %} {% block main-content %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  .hero {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+      url(https://images.pexels.com/photos/3965557/pexels-photo-3965557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+  }
+  .form-box {
+    width: 380px;
+    height: 850px;
+    position: relative;
+    margin: 0 auto;
+    background: #fff;
+    padding: 5px;
+    overflow: hidden;
+  }
+
+  .title {
+    color: #bbabab;
+    text-align: center;
+    margin-top: 74px;
+  }
+
+  #btn {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 110px;
+    height: 100%;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    border-radius: 30px;
+    transition: 0.5s;
+  }
+  .input-groups1 {
+    top: 180px;
+    position: absolute;
+    width: 280px;
+    transition: 0.5s;
+  }
+  .input-field1 {
+    width: 100%;
+    padding: 10px 0;
+    margin: 5px 0;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+  }
+
+  .submit-btn {
+    width: 85%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+  }
+  .check-box {
+    margin: 30px 10px 30px 0;
+  }
+  #checkBox {
+    color: #777;
+    font-size: 12px;
+    bottom: 68px;
+    position: absolute;
+  }
+
+  #Register {
+    left: 50px;
+  }
+
+  .social-icons {
+    margin: 30px auto;
+    text-align: center;
+  }
+  .social-icons img {
+    width: 30px;
+    margin: 0 12px;
+    box-shadow: 0 0 20px 0 #7f7f7f3d;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+</style>
+<div class="hero">
+  <div class="form-box">
+    <h2 class="title">REGISTER</h2>
+    <form
+      id="Register"
+      class="input-groups1"
+      method="post"
+      action=""
+      novalidate
+    >
+      {% csrf_token %} {% for fm in form %}
+      <div class="form-group">
+        {{fm}}<small class="text-danger" placeholder="email"
+          >{{fm.errors|striptags}}</small
+        ><br />
+      </div>
+      {% endfor %}
+      <input type="checkbox" class="check-box" /><span id="checkBox"
+        >I agree to the term & condition</span
+      >
+      <button type="submit" class="submit-btn">Register</button>
+      {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+      <div
+        class="alert alert-danger alert-dismissible fade show"
+        style="margin-top: 200px"
+      >
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+        <strong>{{error}}</strong>
+      </div>
+      {% endfor %} {% endif %}
+    </form>
+  </div>
+</div>
+
+{% endblock main-content %} {% comment %}
+<form action="" method="post" novalidate class="shadow p-5">
+  {% if messages %} {% for mess in messages %}
+  <p {% if mess.tags %} class="alert alert-{{ mess.tags }} mb-5" {% endif %}>
+    {{ mess}}
+  </p>
+  {% endfor %} {% endif %} {% csrf_token %}{% for fm in form %}
+  <div class="form-group mb-3">
+    {{fm.label_tag}} {{fm}}<small class="text-danger"
+      >{{fm.errors|striptags}}</small
+    >
+  </div>
+  {% endfor %}
+  <input type="submit" class="btn btn-primary" value="Sign Up" />
+  <br />
+  <div class="text-center text-primary fw-bold">
+    <small
+      >Existing User ?
+      <a href="{% url 'login' %}" class="text-danger">Login Now</a>
+    </small>
+  </div>
+  {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+  <p class="alert alert-danger my-3">{{error}}</p>
+  {% endfor %} {% endif %}
+</form>
+{% endcomment %}

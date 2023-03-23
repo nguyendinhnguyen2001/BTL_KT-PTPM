@@ -1,0 +1,183 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %}Buy Now
+{%endblock title %} {% block main-content %}
+
+<style>
+  .container .product-item {
+    min-height: 450px;
+    border: none;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0;
+  }
+
+  .container .product-item .product {
+    width: 100%;
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .container .product-item .product img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .container .product-item .product .icons .icon {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.6s ease;
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
+
+  .container .product-item .product .icons .icon:hover {
+    background-color: #b71c1c;
+    color: #fff;
+  }
+
+  .container .product-item .product .icons .icon:nth-last-of-type(3) {
+    transition-delay: 0.2s;
+  }
+
+  .container .product-item .product .icons .icon:nth-last-of-type(2) {
+    transition-delay: 0.15s;
+  }
+
+  .container .product-item .product .icons .icon:nth-last-of-type(1) {
+    transition-delay: 0.1s;
+  }
+
+  .container .product-item:hover .product .icons .icon {
+    transform: translateY(-60px);
+  }
+
+  .container .product-item .tag {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 500;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    padding: 0 0.4rem;
+  }
+
+  .container .product-item .title {
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+
+  .container .product-item .fa-star {
+    font-size: 0.65rem;
+    color: goldenrod;
+  }
+
+  .container .product-item .price {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .fw-800 {
+    font-weight: 800;
+  }
+
+  .bg-green {
+    background-color: #208f20 !important;
+    color: #fff;
+  }
+
+  .bg-black {
+    background-color: #1f1d1d;
+    color: #fff;
+  }
+
+  .bg-red {
+    background-color: #bb3535;
+    color: #fff;
+  }
+
+  @media (max-width: 767.5px) {
+    .navbar-nav .nav-link.active,
+    .navbar-nav .nav-link:hover {
+      background-color: #b71c1c;
+      color: #fff !important;
+    }
+
+    .navbar-nav .nav-link {
+      border: 3px solid transparent;
+      margin: 0.8rem 0;
+      display: flex;
+      border-radius: 10px;
+      justify-content: center;
+    }
+  }
+</style>
+<div class="container bg-white">
+  <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <div class="container-fluid p-0">
+      <a class="navbar-brand text-uppercase fw-800" href="#"
+        ><span class="border-red pe-2">New</span>Product</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#myNav"
+        aria-controls="myNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="fas fa-bars"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="myNav">
+        <div class="navbar-nav ms-auto">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            href="{% url 'product' %}"
+            >All</a
+          >
+          <a class="nav-link" href="{% url 'productWomen' %}">Women's</a>
+          <a class="nav-link" href="{% url 'productMen' %}">Men's</a>
+          <a class="nav-link" href="#">Kid's</a>
+          <a class="nav-link" href="#">Accessories</a>
+          <a class="nav-link" href="#">Cosmetics</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="row">
+    {% for p in productMens %}
+    <div
+      class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3"
+    >
+      <div class="product">
+        <img src="{{p.image.url}}" alt="" />
+        <ul
+          class="d-flex align-items-center justify-content-center list-unstyled icons"
+        >
+          <a href="{% url 'product-detail' p.id %}" style="color: black">
+            <li class="icon"><span class="fas fa-shopping-bag"></span></li>
+          </a>
+        </ul>
+      </div>
+      {% if p.brand == "f0" %}
+      <div class="tag bg-red">Sale</div>
+      {% endif %} {% if p.brand == "f1" %}
+      <div class="tag bg-green">Trending</div>
+      {% endif %}
+      <div class="title pt-4 pb-1">{{p.title}}</div>
+      <div class="price">{{p.discount}}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock main-content %}

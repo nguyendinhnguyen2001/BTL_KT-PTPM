@@ -1,0 +1,76 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %} Profile
+{%endblock title %} {% block main-content %}
+
+<style>
+  .submit-btn {
+    width: 50%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin: auto 0px;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+    margin-top: 60px;
+  }
+  .Address {
+    color: black;
+    padding: 16px 20px;
+    width: 187px;
+    text-align: center;
+    opacity: 0.5;
+  }
+  .profile {
+    width: 187px;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row">
+    <h3>Welcome {{request.user}}</h3>
+    <div class="col-sm-2 border-end">
+      <ul class="list-unstyled">
+        <li class="d-grid">
+          <a
+            href="{% url 'profile' %}"
+            class="btn {{active}} submit-btn profile"
+            >Profile</a
+          >
+        </li>
+        <li class="d-grid">
+          <a href="{% url 'address' %}" class="submit-btn Address">Address</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-8 offset-sm-1">
+      <form action="" method="post" novalidate>
+        {% csrf_token %} {% for fm in form %}
+        <div class="form-group col-lg-6 mb-3">
+          {{fm.label_tag}} {{fm}}<small class="text-danger"
+            >{{fm.errors|striptags}}</small
+          ><br />
+        </div>
+        {% endfor %}
+        <div class="col-12 mt-3">
+          <button type="submit" class="submit-btn">Submit</button>
+        </div>
+      </form>
+      {% if messages %} {% for message in messages %}
+      <p
+        {%
+        if
+        message.tags
+        %}
+        class="alert alert-{{ message.tags}} mb-5 "
+        {%
+        endif
+        %}
+      >
+        {{message}}
+      </p>
+      {% endfor %} {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock main-content %}

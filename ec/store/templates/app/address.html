@@ -1,0 +1,67 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %}
+Address{%endblock title %} {% block main-content %}
+
+<style>
+  .submit-btn {
+    width: 50%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin: auto 0px;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+    margin-top: 60px;
+  }
+  .profile {
+    color: black;
+    padding: 16px 20px;
+    width: 187px;
+    text-align: center;
+    opacity: 0.5;
+  }
+  .Address {
+    width: 187px;
+    color: white;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row">
+    <h3>Welcome {{request.user}}</h3>
+    <div class="col-sm-2 border-end">
+      <ul class="list-unstyled">
+        <li class="d-grid">
+          <a href="{% url 'profile' %}" class="submit-btn profile">Profile</a>
+        </li>
+        <li class="d-grid">
+          <a
+            href="{% url 'address' %}"
+            class="btn {{active}} submit-btn Address "
+            >Address</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 offset-sm-1">
+      <div class="row">
+        {% for address in addresses %}
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h3>Address {{address.id}}</h3>
+              <p>Name: {{address.name}}</p>
+              <p>Mobile: {{address.mobile}}</p>
+              <p>Address: {{address.address}}</p>
+              <p>Zipcode: {{address.zipcode}}</p>
+              <p>State: {{address.state}}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main-content %}
